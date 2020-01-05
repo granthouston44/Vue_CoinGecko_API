@@ -8,7 +8,7 @@
    -->
     <h1>CoinTrek</h1>
     <coin-list v-bind:coinsProp="coins"/>
-    <coin-info :coin="selectedCoin"/>
+    <coin-info :coin="selectedCoin" :coinInfo="coinInfo"/>
   </div>
 </template>
 
@@ -26,16 +26,17 @@ export default {
   data () {
     return {
       coins: [],
-      selectedCoin: null
+      selectedCoin: null,
+      coinInfo: []
     }
   },
   mounted() {
 fetch("https://api.coingecko.com/api/v3/coins/list")
 .then(response => response.json())
-.then(coins => this.coins = coins)
+.then(coinsJSON => this.coins = coinsJSON)
 
 eventBus.$on('coin-selected', (coin)=> {
-  this.selectedCoin = coin;
+  this.selectedCoin = coin
 })
 }
 

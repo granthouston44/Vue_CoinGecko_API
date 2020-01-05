@@ -1,13 +1,13 @@
 <template lang="html">
-  <div v-if="coin">
-      <p>{{coin.symbol}}</p>
+  <div v-if="coinInfo">
+      <p>{{coinInfo.description.en}}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'coin-info',
-  props: ['coin'],
+  props: ['coin','coinInfo'],
 }
 </script>
 
