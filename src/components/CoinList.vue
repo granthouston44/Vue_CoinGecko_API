@@ -35,15 +35,11 @@ props: {coinsProp: Array,
 size:{
   type: Number,
   required: false,
-  default: 1
+  default: 10
 }},
-// mounted:{
-//   for ( coin of this.paginatedData){
-//   return   fetch(`https://api.coingecko.com/api/v3/coins/${coin.id}?localization=false&market_data=true&community_data=false&developer_data=false&sparkline=true`)
-//         .then(response => response.json())
-//         .then(dataJSON => sparkDataArrayTest.push(dataJSON) )
-//   }
-// }
+mounted(){
+    this.getSpark()
+  },
 computed: {
   pageCount(){
     let l = this.coinsProp.length,
@@ -56,16 +52,6 @@ computed: {
 
     return this.coinsProp.slice(start, end)
   },
-  sparkData(){
-    let sparkDataArray = []
-    this.paginatedData.forEach((coinTest,index) =>
-    {
-      fetch(`https://api.coingecko.com/api/v3/coins/${coinTest.id}?localization=false&market_data=true&community_data=false&developer_data=false&sparkline=true`)
-      .then(response => response.json())
-      .then(coinJSON => this.sparkDataArrayTest = coinJSON)
-    })
-    // return this.sparkDataArrayTest
-  }
 },
 components: {
   "coin-list-item": CoinListItem
@@ -73,12 +59,36 @@ components: {
 methods: {
   nextPage(){
     this.currentPage++;
-  },
+      this.paginatedData.forEach((item,index) =>
+      {
+        fetch(`https://api.coingecko.com/api/v3/coins/${item.id}?localization=false&market_data=true&community_data=false&developer_data=false&sparkline=true`)
+        .then(response => response.json())
+        .then(coinJSON => this.sparkDataArrayTest.push(coinJSON))
+      })
+      return this.sparkDataArrayTest
+    },
   prevPage(){
     this.currentPage--
+      this.paginatedData.forEach((item,index) =>
+      {
+        fetch(`https://api.coingecko.com/api/v3/coins/${item.id}?localization=false&market_data=true&community_data=false&developer_data=false&sparkline=true`)
+        .then(response => response.json())
+        .then(coinJSON => this.sparkDataArrayTest.pop(coinJSON))
+      })
+      return this.sparkDataArrayTest
+    },
+    getSpark(){
+      this.paginatedData.forEach((item,index) =>
+      {
+        fetch(`https://api.coingecko.com/api/v3/coins/${item.id}?localization=false&market_data=true&community_data=false&developer_data=false&sparkline=true`)
+        .then(response => response.json())
+        .then(coinJSON => this.sparkDataArrayTest.push(coinJSON))
+      })
+      return this.sparkDataArrayTest
+    }
+    }
   }
-}
-}
+
 </script>
 
 <style lang="css" scoped>
